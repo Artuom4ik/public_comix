@@ -1,4 +1,4 @@
-# public_comix
+# Public_comix
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
@@ -38,9 +38,10 @@ ___
     * Убрать параметр `redirect_uri` у запроса на ключ
     * Параметр `scope` указать через запятую, вот так: `scope=photos, groups`
     * В ответ вы получите ссылку, в ней требуется найти строку `access_token` - это и есть ваш `token`.
-* Сайт для получения [id](https://regvk.com/id/) группы.
+* [Сайт](https://regvk.com/id/) для получения `id` группы.
 ___
 ### Пример работы скрипта:
+![image](image/Снимок.png)
 ___
 ### Цель проекта:
 * Код написан в образовательных целях.
