@@ -86,18 +86,20 @@ if __name__ == "__main__":
     load_dotenv()
     token = os.environ["VK_TOKEN"]
     group_id = os.environ["VK_GROUP_ID"]
-    comic_number = get_comic_number()
-    comment, img_url = get_comic(comic_number)
-    douwnload_img(img_url)
-    upload_url = get_adress_photo(token, group_id)
-    server, photo, photo_hash = upload_image(upload_url)
-    media_id, owner_id = save_photo_to_album(
-        server,
-        photo,
-        photo_hash,
-        group_id,
-        token
-    )
-    post_photo(token, owner_id, media_id, comment, group_id)
-    if os.path.isfile("images/comic.png"):
-        os.remove("images/comic.png")
+    try:
+        comic_number = get_comic_number()
+        comment, img_url = get_comic(comic_number)
+        douwnload_img(img_url)
+        upload_url = get_adress_photo(token, group_id)
+        server, photo, photo_hash = upload_image(upload_url)
+        media_id, owner_id = save_photo_to_album(
+            server,
+            photo,
+            photo_hash,
+            group_id,
+            token
+        )
+        post_photo(token, owner_id, media_id, comment, group_id)
+    finally:
+        if os.path.isfile("images/comic.png"):
+            os.remove("images/comic.png")
