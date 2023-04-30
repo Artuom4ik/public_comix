@@ -5,10 +5,18 @@ import requests
 from dotenv import load_dotenv
 
 
+DIRECTORY_NAME = "images"
+FILE_NAME = "comic.png"
+
+
+class VkApiError(Exception):
+    pass
+
+
 def douwnload_img(img_url):
     response_img = requests.get(img_url)
     response_img.raise_for_status()
-    with open("images/comic.png", "wb") as file:
+    with open(f"{DIRECTORY_NAME}/{FILE_NAME}", "wb") as file:
         file.write(response_img.content)
 
 
@@ -21,11 +29,12 @@ def get_adress_photo(token, group_id):
     url = "https://api.vk.com/method/photos.getWallUploadServer"
     response = requests.get(url, params=params)
     response.raise_for_status()
+    chacking_error(response)
     return response.json()['response']['upload_url']
 
 
 def upload_image(upload_url):
-    with open("images/comic.png", "rb") as image:
+    with open(f"{DIRECTORY_NAME}/{FILE_NAME}", "rb") as image:
         url = upload_url
         files = {
             "photo": image
@@ -48,6 +57,7 @@ def save_photo_to_album(server, photo, photo_hash, group_id, token):
     }
     response = requests.post(url, params=params)
     response.raise_for_status()
+    chacking_error(response)
     save_comic = response.json()["response"][0]
     return save_comic["id"], save_comic["owner_id"]
 
@@ -72,6 +82,7 @@ def post_photo(token, owner_id, media_id, comment, group_id):
     }
     response = requests.post(url, params=params)
     response.raise_for_status()
+    chacking_error(response)
     return response.json()
 
 
@@ -80,6 +91,11 @@ def get_comic_number():
     response = requests.get(url)
     response.raise_for_status()
     return response.json()["num"]
+
+
+def chacking_error(response):
+    if 'error' in response.json().keys():
+        raise VkApiError(response.json()["error"]["error_msg"])
 
 
 if __name__ == "__main__":
@@ -101,5 +117,4 @@ if __name__ == "__main__":
         )
         post_photo(token, owner_id, media_id, comment, group_id)
     finally:
-        if os.path.isfile("images/comic.png"):
-            os.remove("images/comic.png")
+        os.remove(f"{DIRECTORY_NAME}/{FILE_NAME}")
